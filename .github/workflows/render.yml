@@ -1,0 +1,53 @@
+name: Render site
+
+# GitHub Pages serves index.html from main /root verbatim, so the committed
+# HTML has to stay in step with index.qmd. This re-renders on every source
+# change and commits the result back.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.qmd"
+      - "custom.scss"
+      - "custom.js"
+      - "_quarto.yml"
+      - "images/**"
+      - "scripts/**"
+      - ".github/workflows/render.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-site
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.7.32
+
+      - name: Render
+        run: quarto render
+
+      - name: Commit rendered site
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- index.html; then
+            echo "index.html is already up to date."
+            exit 0
+          fi
+          git add index.html
+          git commit -m "Re-render site from index.qmd [skip ci]"
+          git push
