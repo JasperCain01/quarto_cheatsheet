@@ -1,0 +1,263 @@
+/*-- scss:defaults --*/
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif !default;
+$font-family-monospace: "SFMono-Regular", Consolas, "Cascadia Code",
+  "Liberation Mono", Menlo, monospace !default;
+
+$primary: #2f5fd8;
+$link-color: $primary;
+
+$body-font-size: 1rem;
+$toc-font-size: 0.85rem;
+$code-block-font-size: 0.82em;
+$code-block-border-left: 3px solid rgba(47, 95, 216, 0.35);
+$code-bg: rgba(47, 95, 216, 0.06);
+
+$h1-font-size: 2.1rem;
+$h2-font-size: 1.6rem;
+$h3-font-size: 1.15rem;
+
+/*-- scss:rules --*/
+
+// ---------------------------------------------------------------------------
+// Headings: section numbers set slightly back so the words stay scannable
+// ---------------------------------------------------------------------------
+
+h2 {
+  margin-top: 3rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid rgba(47, 95, 216, 0.25);
+}
+
+h3 {
+  margin-top: 2.25rem;
+  font-weight: 600;
+}
+
+h2 .header-section-number,
+h3 .header-section-number {
+  opacity: 0.45;
+  font-weight: 400;
+  margin-right: 0.35rem;
+}
+
+// ---------------------------------------------------------------------------
+// Hero / intro panel
+// ---------------------------------------------------------------------------
+
+.cheat-hero {
+  border: 1px solid var(--bs-border-color);
+  border-left: 4px solid #{$primary};
+  border-radius: 0.6rem;
+  background: rgba(47, 95, 216, 0.05);
+  padding: 1.1rem 1.35rem 0.6rem;
+  margin: 0 0 2rem;
+
+  p:last-child {
+    margin-bottom: 0.6rem;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Syntax / rendered demo pairs
+//
+// :::: {.demo}
+// ::: {.demo-src}  ```markdown … ```  :::
+// ::: {.demo-out}  the live version   :::
+// ::::
+//
+// .demo-out also works on its own, directly under a code block, for examples
+// that need the full page width (layout divs, tabsets, dashboards).
+// ---------------------------------------------------------------------------
+
+.demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  margin: 0.75rem 0 1.9rem;
+
+  > * {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .demo {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+.demo-src,
+.demo-out {
+  position: relative;
+}
+
+.demo-src::before,
+.demo-out::before {
+  position: absolute;
+  top: 0;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.55;
+}
+
+.demo-src {
+  padding-top: 1.45rem;
+
+  &::before {
+    content: "Syntax";
+    left: 0.1rem;
+  }
+
+  div.sourceCode,
+  pre {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.demo-out {
+  padding: 1.75rem 1.1rem 0.35rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  background: var(--bs-body-bg);
+
+  &::before {
+    content: "Renders as";
+    left: 1.1rem;
+    top: 0.5rem;
+  }
+
+  // Standalone (full-width) demo boxes sit under their own code block
+  margin-bottom: 1.9rem;
+
+  > *:last-child {
+    margin-bottom: 0.85rem;
+  }
+
+  .callout {
+    margin-top: 0.4rem;
+  }
+}
+
+.demo + .demo {
+  margin-top: -0.6rem;
+}
+
+// ---------------------------------------------------------------------------
+// Reference tables
+// ---------------------------------------------------------------------------
+
+table {
+  font-size: 0.92rem;
+
+  code {
+    white-space: nowrap;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Table of contents: sticky, with a filter box bolted on by custom.js
+// ---------------------------------------------------------------------------
+
+.toc-filter {
+  width: 100%;
+  margin: 0.35rem 0 0.75rem;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.35rem;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+
+  &:focus {
+    outline: 2px solid rgba(47, 95, 216, 0.45);
+    outline-offset: 1px;
+  }
+}
+
+.toc-filter-empty {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  padding: 0.2rem 0.1rem 0.5rem;
+}
+
+// ---------------------------------------------------------------------------
+// Back-to-top button
+// ---------------------------------------------------------------------------
+
+#back-to-top {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1030;
+  display: none;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  line-height: 1;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 2rem;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+
+  &.visible {
+    display: block;
+  }
+
+  &:hover {
+    border-color: #{$primary};
+    color: #{$primary};
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Odds and ends used by the examples themselves
+// ---------------------------------------------------------------------------
+
+.example-badge {
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  border-radius: 0.35rem;
+  background: rgba(47, 95, 216, 0.12);
+  color: #{$primary};
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.highlight-box {
+  background-color: #fef3c7;
+  color: #4a3b0b;
+  border-radius: 0.4rem;
+  padding: 0.75rem 1rem;
+}
+
+.flex-row-demo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  > div {
+    flex: 1;
+    border: 1px dashed var(--bs-border-color);
+    border-radius: 0.35rem;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+}
+
+kbd {
+  border: 1px solid var(--bs-border-color);
+  border-bottom-width: 2px;
+  border-radius: 0.3rem;
+  padding: 0.1em 0.4em;
+  font-size: 0.85em;
+}

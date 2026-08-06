@@ -1,0 +1,4 @@
+/.quarto/
+/.venv/
+*.pyc
+__pycache__/
